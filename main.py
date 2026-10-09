@@ -48,12 +48,22 @@ def main():
 
         updatable.update(dt)
 
+        # handle player collision with asteroids (game over)
         for asteroid in asteroids:
             collision = asteroid.collides_with(gamer)
             if collision:
                 log_event("player_hit")
                 print(f"Game Over!")
                 sys.exit()
+
+            # handle bullets hitting/destroying asteroids    
+            for shot in shots:
+                shot_ast_coll = shot.collides_with(asteroid)
+                if shot_ast_coll:
+                    log_event("asteroid_shot")
+                    shot.kill()
+                    asteroid.split()
+
             
 
         pygame.display.flip()
